@@ -1,0 +1,18 @@
+{
+  "pairs": 150,
+  "min_opt_over_budget": 1.3539013457868143,
+  "min_trap_gap_over_F0": -7.249090975501739e-16,
+  "min_reference_trap_gap_over_F0": -7.154304680768061e-16,
+  "max_reference_trap_gap_difference": 3.795574965437254e-15,
+  "max_reference_opt_difference": 1.8865259354683417e-08,
+  "max_gradient_difference": 3.149666333237718e-14,
+  "max_residual_star": 2.611999285546205e-13,
+  "max_residual_trap": 9.600069513601563e-13,
+  "min_excess_loss_over_F0": -6.272767249778959e-11,
+  "interior_traps": 72,
+  "face_traps": 13,
+  "tie_traps": 65,
+  "traps_on_eps_sphere": 119,
+  "traps_on_R_sphere": 6,
+  "passed": true
+}

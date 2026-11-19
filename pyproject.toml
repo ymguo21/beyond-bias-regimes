@@ -1,0 +1,40 @@
+[project]
+name = "beyond-bias-regimes"
+version = "0.1.0"
+description = "Numerical experiments for the paper Beyond Bias Regimes: A Continuous Law Governing Optimization and Noise Tolerance in Single-Neuron Learning."
+requires-python = ">=3.12"
+authors = [{ name = "Yaming Guo" }, { name = "Ying Sun" }, { name = "Hui Xiong" }]
+license = { file = "LICENSE" }
+dependencies = [
+  "numpy>=2,<3",
+  "scipy>=1.13,<2",
+  "matplotlib>=3.9,<4",
+  "mpmath>=1.3,<2",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.11,<1"]
+
+[project.scripts]
+regional-bound = "beyond_bias_regimes.regional_bound:main"
+region-conditions = "beyond_bias_regimes.region_conditions:main"
+critical-threshold = "beyond_bias_regimes.critical_threshold:main"
+convergence-rate = "beyond_bias_regimes.convergence_rate:main"
+noise-tolerance = "beyond_bias_regimes.noise_tolerance:main"
+matched-bias = "beyond_bias_regimes.matched_bias:main"
+figures = "beyond_bias_regimes.figures:main"
+report = "beyond_bias_regimes.report:main"
+
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/beyond_bias_regimes"]
+
+[tool.uv]
+cache-keys = [{ file = "pyproject.toml" }, { file = "src/**/*.py" }]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

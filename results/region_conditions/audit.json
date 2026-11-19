@@ -1,0 +1,20 @@
+{
+  "loss_level_minimizers": 1044,
+  "scaled_rows": 147,
+  "polynomial_rows": 898,
+  "max_relative_gap_difference_scaled": 7.7982065249671e-13,
+  "max_absolute_gap_difference_polynomial": 1.822320072619732e-12,
+  "max_relative_loss_difference": 4.563016631209393e-13,
+  "max_reference_gap_difference_over_error": 0.25785134406764054,
+  "max_reference_relative_loss_difference": 3.3995029014022293e-13,
+  "gaps_below_reference_resolution": 0,
+  "reference_agreement": true,
+  "agreement": true,
+  "max_relative_level_mismatch": 3.4776626023358403e-12,
+  "loss_levels_with_violation": 46,
+  "violations_outside_region": true,
+  "reverse_rays_below_one": true,
+  "example_gap": -0.19138204198068304,
+  "example_loss_ratio": 0.009079045444893677,
+  "passed": true
+}

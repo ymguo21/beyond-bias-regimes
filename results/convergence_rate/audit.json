@@ -1,0 +1,10 @@
+{
+  "runs": 25704,
+  "converged": 23873,
+  "projected_runs_outside_region": 0,
+  "max_step_excess": -7.820464349328579e-08,
+  "rechecked_runs": 1978,
+  "max_gradient_error_over_tolerance": 0.049262657046158925,
+  "max_scaled_loss_error": 5.338951121880575e-13,
+  "passed": true
+}

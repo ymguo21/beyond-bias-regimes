@@ -1,0 +1,36 @@
+# Section 8.2, convergence rate: GD and oracle projected GD on the population loss, from a
+# common grid of raw starts. Section 8.4 reuses the costs of oracle projected GD.
+output = "results/convergence_rate"
+b_star = [0.0, -0.5, -1.0, -2.0, -3.0, -4.0]
+alpha = [0.0, 0.01, 0.1, 0.3, 0.5, 0.9]
+C = 0.8
+# The step size that maximizes the certified decrement eta (2 - eta) Lambda.
+eta = 1.0
+
+# Raw starts theta_init = (r cos psi, r sin psi, beta r): angle psi to w*, bias ratio beta and
+# weight norm r. The dynamics stay in the plane of w* and w_init.
+start_angle_deg = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170]
+start_bias_ratio = [-3.0, -2.0, -1.0, -0.5, 0.0, 0.5, 1.0]
+start_norm = [0.5, 1.0, 2.0]
+
+# Levels of ||theta_t - theta*||^2 / ||theta*||^2. Consecutive levels delimit the phases over
+# which iterations per decade are measured, and the last level ends a run. A run that does not
+# reach it stops after max_steps; its window from max_steps / 10 to max_steps counts as a
+# further phase.
+accuracy = [1e-2, 1e-4, 1e-6, 1e-8, 1e-10, 1e-12]
+max_steps = 1000000
+
+# Rounding allowance shared by all experiments: membership in A_{b*} allows a bias slack of
+# -boundary_rtol, since projected iterates land on the face of H up to rounding.
+boundary_rtol = 1e-12
+# Every step taken from A_{b*} must contract ||theta_t - theta*||^2 by the certified factor,
+# up to step_tolerance in the logarithm.
+step_tolerance = 1e-12
+
+# Independent check of the closed-form gradient and loss against the adaptive integrator, at
+# the start and final iterate of every recheck_stride-th run. Losses are compared in units of
+# max(F(0), F); at b* = -4, F(0) is about 1.5e-6.
+recheck_stride = 13
+gradient_rtol = 1e-8
+gradient_atol = 1e-15
+loss_atol = 1e-10

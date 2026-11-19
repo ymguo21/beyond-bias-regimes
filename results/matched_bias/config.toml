@@ -1,0 +1,44 @@
+# Section 8.4, gains from leakage at matched bias: the search of configs/noise_tolerance.toml,
+# rerun with one accuracy eps for all alpha at each b*.
+output = "results/matched_bias"
+b_star = [
+  0.0, -0.25, -0.5, -0.75, -1.0, -1.25, -1.5, -1.75, -2.0, -2.25, -2.5, -2.75, -3.0,
+  -3.25, -3.5, -3.75, -4.0, -4.25, -4.5, -4.75, -5.0, -5.25, -5.5, -5.75, -6.0,
+]
+alpha = [0.0, 0.01, 0.1, 0.3, 0.5, 0.9]
+C = 0.8
+
+# Accuracy eps = eps_rel F_0(0), the zero-predictor loss of ReLU at the same b*, for every
+# alpha: the noise-budget comparison at matched bias holds eps fixed across activations. eps
+# must lie below R^2 = 2 C F(0) of every pair, and ReLU has the smallest F(0). The ReLU pairs
+# are those of configs/noise_tolerance.toml.
+eps_reference = "relu"
+eps_rel = 1e-2
+
+# Search and audit settings as in configs/noise_tolerance.toml.
+grid_radii = 14
+grid_chi = 31
+grid_omega = 61
+tie_tolerance = 1e-15
+# The search admits trap gaps down to -search_tie_tolerance F(0), half the audit tolerance:
+# with both equal, a trap at the edge of the search tolerance fails the audit whenever
+# the independent integrator differs in the last digits (configs/noise_tolerance.toml uses the
+# audit tolerance for both, which its traps pass).
+search_tie_tolerance = 5e-16
+tie_grid = 17
+seeds = 3
+neighbours = 2
+sweeps = 3
+maxiter = 1500
+xatol = 1e-8
+fatol = 1e-12
+boundary_rtol = 1e-12
+reference_rtol = 1e-6
+gradient_rtol = 1e-12
+residual_tolerance = 1e-7
+optimality_shells = 12
+optimality_inner = 1e-3
+optimality_outer = 3.0
+optimality_directions = 64
+optimality_seeds = 3
+optimality_tolerance = 1e-9

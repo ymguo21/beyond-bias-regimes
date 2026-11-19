@@ -1,0 +1,22 @@
+{
+  "spheres": 3708,
+  "evaluated_points": 34335252,
+  "in_region_points": 21557898,
+  "raw_negative_gaps": 0,
+  "confirmed_negative_gaps": 0,
+  "min_gap": 1.5216544488434288e-18,
+  "min_precise_gap": 1.521654448843429e-18,
+  "all_outer_spheres_empty": true,
+  "max_gap_over_ray": 1.0000000000000058,
+  "scaled_rows": 2644,
+  "polynomial_rows": 576,
+  "max_relative_gap_difference_scaled": 7.809308755213351e-13,
+  "max_absolute_gap_difference_polynomial": 2.569444657041231e-12,
+  "max_relative_loss_difference": 2.7697844018348405e-12,
+  "max_reference_gap_difference_over_error": 0.35820570180074807,
+  "max_reference_relative_loss_difference": 3.388400671155978e-13,
+  "gaps_below_reference_resolution": 131,
+  "reference_agreement": true,
+  "agreement": true,
+  "passed": true
+}

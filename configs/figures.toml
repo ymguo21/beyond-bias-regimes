@@ -1,0 +1,85 @@
+# Presentation settings of src/beyond_bias_regimes/figures.py. They select what is shown and how,
+# and never alter the saved results.
+
+# Display intervals of relative distance for the staircases of the regional-bound and
+# region-condition figures.
+# Each edge snaps to the nearest sampled distance, and a step's height is the smallest value
+# within its closed interval: one interval per decade below 0.1, finer above, where the outer
+# boundary of the region bends the envelope.
+distance_edges = [
+  1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 0.1,
+  0.2, 0.4, 0.6, 0.8, 1.0, 1.2,
+]
+
+# Shading of zeta < 1, and of noise levels at which a trap exists.
+violation_color = "#f6d5d1"
+
+# Leak coefficients shown in the paper; the full grids are in figures/supplementary/.
+paper_regional_bound_alpha = [0, 0.1, 0.9]
+paper_region_conditions_alpha = 0.01
+paper_noise_tolerance_alpha = [0, 0.1, 0.9]
+
+# Figure sizes in inches (width, height) for the figures narrower than the text width.
+region_conditions_size = [4.8, 2.35]
+convergence_rate_size = [3.9, 2.2]
+
+# One color per target bias (viridis on [0, 0.75]) and, in the critical-threshold figure, one
+# marker.
+[b_star_colors]
+"0" = "#440154"
+"-0.5" = "#482677"
+"-1" = "#3f4788"
+"-2" = "#32658e"
+"-3" = "#277f8e"
+"-4" = "#1f998a"
+"-5" = "#2db27d"
+"-6" = "#5ec962"
+
+[b_star_markers]
+"0" = "o"
+"-0.5" = "s"
+"-1" = "D"
+"-2" = "^"
+"-3" = "v"
+"-4" = "<"
+"-5" = ">"
+"-6" = "p"
+
+# Methods of Section 8.2 (Okabe-Ito colors).
+[method_colors]
+gd = "#4d4d4d"
+projected_gd = "#d55e00"
+
+[method_markers]
+gd = "o"
+projected_gd = "s"
+
+[method_labels]
+gd = "GD"
+projected_gd = "Oracle projected GD"
+
+# Section 8.3: regions of the noise level OPT, certified below the budget and undecided
+# between the budget and the cheapest trap found.
+[noise_tolerance_display]
+certified_color = "#dcefe0"
+undecided_color = "#eeeeee"
+
+# Section 8.4: one color and marker per leak coefficient (Okabe-Ito), and the band
+# 1 <= beta <= 2 of the budget gain.
+[matched_bias_display]
+alpha = [0.01, 0.1, 0.3, 0.5, 0.9]
+band_color = "#eeeeee"
+
+[matched_bias_display.alpha_colors]
+"0.01" = "#e69f00"
+"0.1" = "#009e73"
+"0.3" = "#0072b2"
+"0.5" = "#cc79a7"
+"0.9" = "#d55e00"
+
+[matched_bias_display.alpha_markers]
+"0.01" = "o"
+"0.1" = "s"
+"0.3" = "D"
+"0.5" = "^"
+"0.9" = "v"

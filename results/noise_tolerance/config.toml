@@ -1,0 +1,79 @@
+# Section 8.3, agnostic noise tolerance: cheapest trap labels against the noise budget.
+output = "results/noise_tolerance"
+b_star = [
+  0.0, -0.25, -0.5, -0.75, -1.0, -1.25, -1.5, -1.75, -2.0, -2.25, -2.5, -2.75, -3.0,
+  -3.25, -3.5, -3.75, -4.0, -4.25, -4.5, -4.75, -5.0, -5.25, -5.5, -5.75, -6.0,
+]
+alpha = [0.0, 0.01, 0.1, 0.3, 0.5, 0.9]
+C = 0.8
+
+# Accuracy eps = eps_rel F_alpha(0), with F_alpha(0) of the pair itself.
+eps_reference = "own"
+eps_rel = 1e-2
+
+# Traps theta^ = theta* + r (sin chi m + cos chi (cos omega e3 + sin omega e2)) in
+# H cap B(theta*, R), R = sqrt(2 C F(0)), with r in [sqrt(eps), R], chi in [0, pi/2]
+# (chi = 0: the face of H) and omega in [0, pi] (w_2 >= 0 by symmetry). The coarse grid is
+# geometric in r and uniform in the angles.
+grid_radii = 14
+grid_chi = 31
+grid_omega = 61
+
+# Feasible traps have L(theta^) - L(theta*) = (E[f*^2] - E[f^^2]) / 2 >= 0, to the rounding
+# tolerance tie_tolerance F(0) (the trap gap is computed without cancellation, to about
+# 1e-18 F(0)). Traps with a zero gap tie theta* in loss; like traps on the eps-sphere, they are
+# limits of traps that stop GD with theta* the strict minimizer, at the same OPT in the limit.
+# The cheapest ReLU traps are such limits, at the bottom of a valley of OPT so narrow that any
+# fixed positive margin would lift them out of it (at b* = -6, a margin of 1e-14 F(0) raises
+# OPT 38-fold).
+# Families (noise_tolerance.FAMILIES): interior, the face of H, and the tie surface
+# E[f^^2] = E[f*^2] where the optimality constraint is active. Tie points are found by
+# Brent's method from sign changes of the trap gap on tie_grid values of chi; the grid seeds
+# use the grid's own values. tie_tolerance is the one rounding allowance below the shared
+# boundary_rtol: the trap gap is computed to about 1e-18 F(0), and a larger allowance would
+# itself move the cheapest trap along its narrow valley.
+tie_tolerance = 1e-15
+# Trap-gap tolerance of the search, at most tie_tolerance.
+search_tie_tolerance = 1e-15
+tie_grid = 17
+
+# Local refinement: Nelder-Mead on log OPT from the best `seeds` grid points of each family,
+# then sweeps over b* in which every pair restarts from the cheapest traps of its neighbours
+# within `neighbours` steps, in the neighbour's family, keeping any improvement by more than
+# a relative boundary_rtol. A neighbour seeds only if its trap changed in the current or the
+# previous sweep.
+seeds = 3
+neighbours = 2
+sweeps = 3
+maxiter = 1500
+xatol = 1e-8
+fatol = 1e-12
+# Rounding allowance shared by all experiments: improvements in the sweeps, and the counts of
+# traps on the eps-sphere and on the R-sphere (traps clipped to a radius bound).
+boundary_rtol = 1e-12
+
+# Audits. Every cheapest trap is recomputed with the independent adaptive integrator
+# (labels.reference) and must agree in OPT to reference_rtol: for ReLU at b* <= -4 the z*
+# component of grad F is up to twelve orders below the atom moments it is summed from, and
+# the atom OPT loses up to seven digits (at b* = -6, against 40-digit integration, the atom
+# OPT is accurate to 2e-8 and the reference to 2e-11). The reference must also find
+# E[f^^2] < E[f*^2]. grad F must agree with the closed form of gradient.py to gradient_rtol
+# (observed: 3.3e-14);
+# both stationarity residuals, in the reference arithmetic and relative to |grad^ F + mu n^|,
+# must be at most residual_tolerance.
+reference_rtol = 1e-6
+gradient_rtol = 1e-12
+residual_tolerance = 1e-7
+
+# Optimality of theta* under the trap labels: L(theta) - L(theta*) over the plane
+# (w_1, w_2, b), which suffices because a weight component outside the plane only averages
+# in-plane losses over the bias. Starts on optimality_shells geometric shells from
+# optimality_inner R to optimality_outer ||theta*||, in optimality_directions Fibonacci
+# directions; Nelder-Mead from the optimality_seeds best and from the trap. The smallest
+# value must be at least -optimality_tolerance F(0).
+optimality_shells = 12
+optimality_inner = 1e-3
+optimality_outer = 3.0
+optimality_directions = 64
+optimality_seeds = 3
+optimality_tolerance = 1e-9

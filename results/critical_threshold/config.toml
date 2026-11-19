@@ -1,0 +1,42 @@
+# Section 8.1, critical loss threshold C_bar(b_star, alpha), with the bias condition kept.
+# The theorem gives C_bar >= 4/5; the near-critical cases need b_star < -4 and small alpha.
+output = "results/critical_threshold"
+b_star = [0.0, -0.5, -1.0, -2.0, -3.0, -4.0, -5.0, -6.0]
+alpha = [
+  0.0, 0.00001, 0.00002, 0.00005, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005,
+  0.01, 0.02, 0.05, 0.1, 0.3, 0.5, 0.9,
+]
+# Counterexamples must satisfy zeta <= 1 - tau, because rounding cannot decide the sign of
+# a much smaller zeta - 1: the moment-polynomial evaluation carries absolute errors up to
+# about 7e-12 (b_star <= -5, alpha = 0), above gap_atol below, so tau must stay well above
+# 1e-11: with tau = 1e-12 the closed-form intervals of 39 of the 93 pairs are no longer
+# confirmed numerically. tau = 1e-9 leaves two orders of margin. Against tau = 1e-10, it
+# leaves the same 93 pairs and the lowest value 0.8169 unchanged, and raises the bounds at
+# b_star = -6, alpha = 0.005 and 0.01 (0.876 -> 0.886, 0.936 -> 0.985), where the deepest
+# violations at low loss are of order 1e-9.
+tau = 1e-9
+# Rounding allowance shared by all experiments. The least loss on a ray lies at an end of
+# its violation interval, where zeta - 1 = -tau; the search uses the intervals of
+# tau + boundary_rtol, so the 40-digit check zeta - 1 <= -tau holds literally (the ends
+# miss -tau by at most 6e-16 in double precision).
+boundary_rtol = 1e-12
+
+# Directions: psi linear; beta linear plus geometric offsets from the bias face.
+psi_points = 161
+beta_linear_points = 101
+beta_geometric_points = 60
+beta_geometric_min = 1e-8
+refine_levels = 4
+refine_points = 25
+# Fallback samples on a ray whose analytic interval is not confirmed numerically.
+interval_samples = 33
+# theta = 0 has no gradient; violation intervals reaching it start at this scale.
+scale_min = 1e-8
+
+# Counterexamples are rechecked against the mpmath oracle. For b_star <= -5 and alpha = 0,
+# Lambda is near 1e-9 and moment-polynomial gaps carry absolute errors near 1e-12;
+# gap_atol stays 1e-1 of tau, and every violation must be confirmed.
+precise_digits = 40
+gap_rtol = 1e-7
+gap_atol = 1e-11
+loss_rtol = 1e-9
