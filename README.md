@@ -3,8 +3,10 @@
 This repository contains the code, configurations and saved results of the numerical
 experiments in Section 8 of the paper
 
-> Yaming Guo, Ying Sun and Hui Xiong. *Beyond Bias Regimes: A Continuous Law Governing
-> Optimization and Noise Tolerance in Single-Neuron Learning.*
+> Yaming GUO, Ying SUN and Hui XIONG. *Beyond Bias Regimes: A Continuous Law Governing
+> Convergence and Noise Tolerance in Single-Neuron Learning.*
+>
+> The Hong Kong University of Science and Technology (Guangzhou). Corresponding authors: Ying SUN (sunyinggilly@gmail.com) and Hui XIONG (xionghui@ust.hk).
 
 The paper studies population gradient descent (GD) on the squared loss for a single affine
 neuron $f_\theta(x)=\sigma_\alpha(\langle w,x\rangle+b)$ with ReLU ($\alpha=0$) or Leaky ReLU
@@ -121,12 +123,11 @@ figures/                  figures of Section 8, and full grids in supplementary/
 ## Citation
 
 ```bibtex
-@unpublished{guo2026beyond,
-  author = {Guo, Yaming and Sun, Ying and Xiong, Hui},
-  title  = {Beyond Bias Regimes: A Continuous Law Governing Optimization and Noise Tolerance
-            in Single-Neuron Learning},
-  year   = {2026},
-  note   = {Manuscript}
+@article{guo2026beyond,
+  title   = {Beyond Bias Regimes: A Continuous Law Governing Convergence and Noise Tolerance in Single-Neuron Learning},
+  author  = {Guo, Yaming and Sun, Ying and Xiong, Hui},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
 }
 ```
 

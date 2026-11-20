@@ -1,9 +1,9 @@
 [project]
 name = "beyond-bias-regimes"
 version = "0.1.0"
-description = "Numerical experiments for the paper Beyond Bias Regimes: A Continuous Law Governing Optimization and Noise Tolerance in Single-Neuron Learning."
+description = "Numerical experiments for “Beyond Bias Regimes: A Continuous Law Governing Convergence and Noise Tolerance in Single-Neuron Learning.”"
 requires-python = ">=3.12"
-authors = [{ name = "Yaming Guo" }, { name = "Ying Sun" }, { name = "Hui Xiong" }]
+authors = [{ name = "Yaming GUO" }, { name = "Ying SUN" }, { name = "Hui XIONG" }]
 license = { file = "LICENSE" }
 dependencies = [
   "numpy>=2,<3",
