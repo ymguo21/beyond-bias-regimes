@@ -79,12 +79,14 @@ The settings of every experiment are in `configs/`.
   that satisfies $b \ge b^\star\|w\|$ has a loss ratio above $4/5$. The smallest such ratio,
   $0.8169$ at $b^\star = -6$ and $\alpha = 5 \times 10^{-5}$, bounds $\bar{C}_\alpha(b^\star)$
   from above, so $4/5$ is within $0.02$ of the largest uniform threshold.
-- **Convergence rate (8.2).** In all $36$ pairs, with $357$ starts per pair and step size
+- **Convergence rate (8.2).** With $357$ starts in each of the $36$ pairs and step size
   $\eta = 1$, the median iteration cost per decade equals half the bound of the Regional Gradient
   Descent theorem to within $0.14\%$ for oracle projected GD and $0.64\%$ for the converged runs
-  of plain GD, because near $\theta^\star$ the error aligns with $v_{\min}$. Plain GD converges
-  from every start for $\alpha > 0$, whereas for ReLU the share of runs that fail to converge
-  grows as $b^\star$ decreases, from $84/357$ at $b^\star = 0$ to $357/357$ at $b^\star = -4$.
+  of plain GD, because near $\theta^\star$ the error aligns with $v_{\min}$. Plain GD reaches the
+  stopping tolerance $10^{-12}$ within the $10^6$-step cap from every start for $\alpha > 0$,
+  whereas for ReLU the share of starts that do not finish within $10^6$ steps grows from $84/357$
+  at $b^\star = 0$ to $357/357$ at $b^\star = -4$ ($238/357$ end with the neuron nearly inactive,
+  and the remaining $119/357$ hit the step cap because one decade already takes over $10^7$ steps).
   Hence $\Lambda_\alpha(b^\star)$ predicts the rate of GD far outside the ball covered by the
   Region-Free Gradient Descent theorem.
 - **Agnostic noise tolerance (8.3).** Let $U_\alpha(b^\star; \varepsilon)$ be the least
@@ -141,17 +143,6 @@ configs/                  Settings of the experiments and the figures
 docs/                     Derivations (theory.md) and experimental protocol (protocol.md)
 results/                  Saved results, audits, and numbers.md
 figures/                  Figures of Section 8, with full grids in supplementary/
-```
-
-## Citation
-
-```bibtex
-@article{guo2026beyond,
-  title   = {Beyond Bias Regimes: A Continuous Law Governing Convergence and Noise Tolerance in Single-Neuron Learning},
-  author  = {Guo, Yaming and Sun, Ying and Xiong, Hui},
-  journal = {arXiv preprint arXiv:XXXX.XXXXX},
-  year    = {2026}
-}
 ```
 
 ## License

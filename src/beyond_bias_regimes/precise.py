@@ -25,8 +25,10 @@ def truncated(mean, sd):
     return upper, tuple(t - u for t, u in zip(total, upper))
 
 
-def precise_values(theta, b_star, alpha, digits=40, displacement=None):
-    """Loss ratio F/F(0), gap zeta-1, and quadrature error estimate of the gap, as floats.
+def precise_values(theta, b_star, alpha, digits=40, displacement=None, *, gap_as_float=True):
+    """Loss ratio F/F(0), gap zeta-1, and quadrature error estimate of the gap.
+
+    Returns floats by default. Set `gap_as_float=False` to retain the working-precision gap.
 
     An optional exact displacement (delta, v) defines theta=theta*+delta*v in
     working precision instead of the rounded coordinates `theta`.
@@ -73,4 +75,8 @@ def precise_values(theta, b_star, alpha, digits=40, displacement=None):
         lam = al * al + (1 - al * al) * (mp.ncdf(bs) - mp.npdf(bs) * k)
         distance2 = (p - 1) ** 2 + q * q + (b - bs) ** 2
         gap = (value.real - lam * distance2) / (lam * distance2)
-        return float(value.imag / zero_loss2), float(gap), float(error / (lam * distance2))
+        return (
+            float(value.imag / zero_loss2),
+            float(gap) if gap_as_float else gap,
+            float(error / (lam * distance2)),
+        )

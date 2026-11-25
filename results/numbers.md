@@ -41,7 +41,7 @@ Critical loss threshold:
 - ReLU GD runs that end with a firing probability below 1% of the target's, per b*: 0: 84/357, -0.5: 102/357, -1: 125/357, -2: 168/357, -3: 203/357, -4: 238/357
 - largest final firing probability of these runs relative to the target's: 0.0052
 - ReLU, b* = -2: relative squared radius of the ball with rho = 1/2: 1.5e-08; median cost of the GD phase from 1e-2 to 1e-4 over the certified cost: 0.49
-- largest cost over the certified cost (projected GD runs and converged GD runs): 0.53
+- largest cost over the certified cost, runs covered by the theorem (projected GD runs and the 657 GD runs that remain in the region): 0.50
 - audits: projected GD runs outside the region: 0; largest excess of a step from the region over the certified contraction, in log: -7.8e-08
 
 ## 8.3 Agnostic Noise Tolerance

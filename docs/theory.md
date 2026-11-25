@@ -73,9 +73,11 @@ Consequences used by the experiments:
   $\langle\theta-\theta^\star,\nabla F\rangle-\ell\Lambda\|\theta-\theta^\star\|^2
   =(A-\ell\Lambda)s^2-(B+H-2\ell\Lambda K)s+(J-\ell\Lambda(1+(b^\star)^2))$.
   With $\ell=1$, dividing by $\Lambda\|\theta-\theta^\star\|^2$ gives the gap.
-  On rays that satisfy the bias condition the gate probability is at least $\Phi(b^\star)$, so
-  $A\ge\alpha^2+(1-\alpha^2)\Phi(b^\star)>\Lambda$ and the leading coefficient
-  is positive for $\ell\le1$.
+  On rays that satisfy the bias condition, write $a=-b^\star$ and $t=-b/\|w\|\le a$. For a unit
+  ray with $w\neq0$, $A=\alpha^2+(1-\alpha^2)\mu_2(t)/(1+t^2)$, whose $t$-derivative is
+  $-2(1-\alpha^2)\phi(t)/(1+t^2)^2<0$; its minimum is at $t=a$, where
+  $\mu_2(a)/(1+a^2)-\Lambda_0=\kappa^3\phi(a)/(1+a^2)>0$, so $A>\Lambda$. A positive constant ray
+  ($w=0$, $b=1$) gives $A=1>\Lambda$. Hence the leading coefficient is positive for $\ell\le1$.
 - **Stationary scales.** Differentiating the quotient of two quadratics gives
   one quadratic equation; its real roots, together with interval ends, contain
   the minimum of $\zeta$ along any ray segment.
@@ -313,7 +315,7 @@ $\theta\mapsto P_{\mathcal H}(\theta-\eta\nabla L(\theta))$ for every $\eta>0$ i
 $\nabla L(\hat\theta)=0$, or $\hat\theta$ lies on the face $b=b^\star w_\parallel$ and
 $\nabla L(\hat\theta)=-\mu n$ with $\mu\ge0$ and $n=(b^\star,0,-1)/\sqrt{1+(b^\star)^2}$
 the outward normal. A run started there never moves, so if
-$\|\hat\theta-\theta^\star\|^2>\varepsilon$ it never reaches $\varepsilon$.
+$\|\hat\theta-\theta^\star\|^2\ge\varepsilon$ it never enters $\{\|\theta-\theta^\star\|^2<\varepsilon\}$.
 
 **Cheapest labels.** With $s(z)=\alpha+(1-\alpha)1\{z>0\}$,
 $\nabla L(\theta)=\nabla F(\theta)-E[s(z_\theta)\widetilde X\xi]$, where $F$ is the
@@ -341,7 +343,7 @@ the on/off patterns $p$ of the gates involved. For fixed $X_2$ each gate is a ha
 $X_1$, so $A_p$ is an integral over $X_2$ of truncated Gaussian moments of an interval,
 in closed form (or Gauss-Legendre in $z^\star$ on intervals shorter than 1). The
 $X_2$-integral uses 12-point Gauss-Legendre on segments split wherever an interval end
-crosses $z^\star\in\{0,\pm1,\pm3,\pm6,\pm10\}$. Wedge atoms are integrated directly,
+crosses $X_1\in\{0,\pm1,\pm3,\pm6,\pm10\}$ (equivalently $z^\star\in b^\star+\{0,\pm1,\pm3,\pm6,\pm10\}$). Wedge atoms are integrated directly,
 never formed as differences. `labels.reference` integrates in the other order, adaptively
 in $z^\star$ with the $X_2$-moments in closed form.
 

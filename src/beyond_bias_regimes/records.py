@@ -11,6 +11,7 @@ import tomllib
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
+import mpmath as mp
 import numpy as np
 
 from .gaussian import reference_moments, signal, target_second
@@ -85,7 +86,7 @@ RECHECK_KEYS = (
 
 
 def _recheck(task):
-    theta, b_star, alpha, digits, displacement = task
+    theta, b_star, alpha, digits, displacement, gap_limit = task
     loss, gradient, quad_error = reference_moments(theta, b_star, alpha, displacement)
     if displacement is None:
         error = theta - np.array([1.0, 0.0, b_star])
@@ -93,22 +94,27 @@ def _recheck(task):
         error = displacement[0] * displacement[1]
     lam_distance2 = signal(b_star, alpha) * (error @ error)
     precise_loss, precise_gap, precise_error = precise_values(
-        theta, b_star, alpha, digits, displacement
+        theta, b_star, alpha, digits, displacement, gap_as_float=gap_limit is None
     )
-    return {
+    result = {
         "reference_loss_ratio": float(2 * loss / target_second(b_star, alpha)),
         "reference_gap": float((error @ gradient - lam_distance2) / lam_distance2),
         "reference_gap_error": float(quad_error * np.sqrt(error @ error) / lam_distance2),
         "precise_loss_ratio": precise_loss,
-        "precise_gap": precise_gap,
+        "precise_gap": float(precise_gap),
         "precise_gap_error": precise_error,
     }
+    if gap_limit is not None:
+        with mp.workdps(digits):
+            result["precise_gap_confirmed"] = bool(precise_gap <= mp.mpf(gap_limit))
+    return result
 
 
-def recheck(rows, digits):
+def recheck(rows, digits, *, gap_limit=None):
     """Recompute rows with the adaptive full-gradient oracle and the mpmath oracle.
 
     Rows carrying `delta` and `v0..v2` are exact displacements theta*+delta*v.
+    If `gap_limit` is set, record whether each gap meets it before rounding to float.
     """
     tasks = [
         (
@@ -117,6 +123,7 @@ def recheck(rows, digits):
             row["alpha"],
             digits,
             (row["delta"], np.array([row["v0"], row["v1"], row["v2"]])) if "delta" in row else None,
+            gap_limit,
         )
         for row in rows
     ]

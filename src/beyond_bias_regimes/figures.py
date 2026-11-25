@@ -1,6 +1,6 @@
 """Figures of Section 8, drawn from the saved results.
 
-The six figures of the paper are written to `figures/`. Where a paper figure shows only some
+Figures 2–7 of the paper are written to `figures/`. Where a paper figure shows only some
 leak coefficients, the full grid is written to `figures/supplementary/`. Presentation
 settings are in `configs/figures.toml`.
 """

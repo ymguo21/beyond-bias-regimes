@@ -10,6 +10,8 @@ point counts as a counterexample only when zeta <= 1 - tau, confirmed by 40-digi
 integration. The least loss on a ray lies at an end of its violation interval, where
 zeta - 1 = -tau exactly; the search therefore uses intervals for tau + boundary_rtol,
 so that every counterexample satisfies zeta <= 1 - tau with room for rounding.
+The beta grid also starts boundary_rtol inside the bias face to allow for rounding
+when converting the searched direction and scale to binary64 coordinates.
 Every reported value is attained by an explicit, independently rechecked
 counterexample, so it is an upper bound on C_bar; a confirmed value below 4/5 would
 contradict the theorem.
@@ -20,6 +22,7 @@ import os
 import time
 from concurrent.futures import ProcessPoolExecutor
 
+import mpmath as mp
 import numpy as np
 
 from .gaussian import Geometry, point_values, target_second
@@ -74,9 +77,10 @@ def objective_for(tau, margin, samples, scale_min):
 def threshold_bias(task):
     b_star, config = task
     beta0 = np.arctan(b_star)
+    beta_low = beta0 + config["boundary_rtol"]
     psi = np.linspace(0, np.pi, config["psi_points"])
     beta = beta_grid(
-        beta0,
+        beta_low,
         np.pi / 2,
         config["beta_linear_points"],
         config["beta_geometric_points"],
@@ -123,6 +127,23 @@ def threshold_bias(task):
     return rows
 
 
+def bias_audit(rows, digits):
+    with mp.workdps(digits):
+        precise_slacks = []
+        for row in rows:
+            parallel, perp, bias, b_star = (
+                mp.mpf(float(row[key])) for key in ("w_parallel", "w_perp", "bias", "b_star")
+            )
+            precise_slacks.append(bias - b_star * mp.hypot(parallel, perp))
+        return {
+            "min_bias_slack": min(row["bias_slack"] for row in rows),
+            "min_precise_bias_slack": float(min(precise_slacks)),
+            "counterexamples_bias_feasible": sum(
+                row["bias_slack"] >= 0 and slack >= 0 for row, slack in zip(rows, precise_slacks)
+            ),
+        }
+
+
 def run(config_path):
     started = time.perf_counter()
     config, output = load_config(config_path)
@@ -132,10 +153,13 @@ def run(config_path):
             for part in pool.map(threshold_bias, [(b, config) for b in config["b_star"]])
             for row in part
         ]
-    counterexamples = recheck([r for r in rows if r["found"]], config["precise_digits"])
+    counterexamples = recheck(
+        [r for r in rows if r["found"]], config["precise_digits"], gap_limit=-config["tau"]
+    )
     for row in rows:
         for key in (
             *RECHECK_KEYS,
+            "precise_gap_confirmed",
             "psi",
             "beta_minus_face",
             "scale",
@@ -150,20 +174,22 @@ def run(config_path):
         ):
             row.setdefault(key, np.nan)
     write_csv(output / "thresholds.csv", rows)
-    # The paper's criterion, applied literally to the 40-digit value.
-    confirmed = [r["precise_gap"] <= -r["tau"] for r in counterexamples]
+    confirmed = [r["precise_gap_confirmed"] for r in counterexamples]
     lowest = min(counterexamples, key=lambda r: r["critical_threshold"])
     audit = {
         "pairs": len(rows),
         "counterexamples": len(counterexamples),
         "counterexamples_confirmed": int(sum(confirmed)),
+        **bias_audit(counterexamples, config["precise_digits"]),
         **agreement(counterexamples, config["gap_rtol"], config["gap_atol"], config["loss_rtol"]),
         "lowest_threshold": lowest["critical_threshold"],
         "lowest_threshold_pair": {k: lowest[k] for k in ("b_star", "alpha", "tau")},
         "all_above_four_fifths": all(r["critical_threshold"] > 0.8 for r in counterexamples),
     }
     audit["passed"] = bool(
-        audit["counterexamples_confirmed"] == len(counterexamples) and audit["agreement"]
+        audit["counterexamples_confirmed"] == len(counterexamples)
+        and audit["counterexamples_bias_feasible"] == len(counterexamples)
+        and audit["agreement"]
     )
     write_json(output / "audit.json", audit)
     write_json(output / "metadata.json", metadata(config, time.perf_counter() - started))

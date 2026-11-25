@@ -196,7 +196,9 @@ def convergence_rate(results):
     first = np.median(
         [r["phase_1e-02_1e-04"] for r in relu_gd[-2.0] if np.isfinite(r["phase_1e-02_1e-04"])]
     )
-    rated = [r for r in runs if r["method"] == "projected_gd" or r["converged"]]
+    # Runs covered by the Regional Gradient Descent theorem: every projected GD run and the GD
+    # runs whose iterates all remain in the region.
+    rated = [r for r in runs if r["method"] == "projected_gd" or r["stayed_in_region"]]
     ratios = [r["per_decade"] / certified_cost(r["b_star"], r["alpha"], eta) for r in rated]
     convergence = audit(results, "convergence_rate")
     return [
@@ -227,7 +229,9 @@ def convergence_rate(results):
             f"{first / certified_cost(-2.0, 0.0, eta):.2f}"
         ),
         (
-            "- largest cost over the certified cost (projected GD runs and converged GD runs): "
+            "- largest cost over the certified cost, runs covered by the theorem "
+            f"(projected GD runs and the {sum(r['method'] == 'gd' for r in rated)} GD runs that "
+            "remain in the region): "
             f"{max(ratios):.2f}"
         ),
         (
