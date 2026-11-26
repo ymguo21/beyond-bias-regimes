@@ -5,6 +5,8 @@ This repository reproduces the numerical experiments of the paper
 > Yaming GUO, Ying SUN, and Hui XIONG. *Beyond Bias Regimes: A Continuous Law Governing
 > Convergence and Noise Tolerance in Single-Neuron Learning.*
 
+The manuscript PDF and interactive demo are available on the [project page](https://www.ymguo21.page/projects/beyond-bias-regimes/).
+
 ## Overview
 
 The paper studies population gradient descent (GD) on the squared loss for a single affine
